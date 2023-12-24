@@ -6,9 +6,7 @@ import math
 def naive_process_selection(processes, time_limit):
     # (process_id, duration, value)
 
-    # start_time = time.time()
     start_time = time.perf_counter()
-    print(start_time)
 
     max_value, best_duration = 0,0      # Maximum value of a valid combination and its duration
     best_combination = []               # The combination
@@ -25,26 +23,22 @@ def naive_process_selection(processes, time_limit):
                 best_combination = [process[0] for process in combo]
                 best_duration = total_time
     
-    # end_time = time.time()
     end_time = time.perf_counter()
-    print(end_time)
-    # running_time_ms = int((end_time - start_time) * 1000)  # Convert to milliseconds
-    running_time_ms = (end_time - start_time) * 1000  # Convert to milliseconds
-    print(running_time_ms)
+    running_time_ns = int((end_time - start_time) * 1000000)  # Convert to nanoseconds
     
     result = {
         "Solution 1 - Naive": "",
         "Selected processes": best_combination,
         "Total value": max_value,
         "Total duration": best_duration,
-        "Running time (ms)": running_time_ms
+        "Running time (ns)": running_time_ns
     }
     
     return result
 
 def greedy_process_selection(processes, time_limit):
 
-    start_time = time.time()
+    start_time = time.perf_counter()
     # Sort processes in descending order with respect to value-to-time ratio (density)
     sorted_processes = sorted(processes, key=lambda x: x[2]/x[1], reverse=True)
 
@@ -62,23 +56,22 @@ def greedy_process_selection(processes, time_limit):
             if total_duration == time_limit:
                 break
             # If the current process exceeds the time limit, skip it
-            continue
     
-    end_time = time.time()
-    running_time_ms = int((end_time - start_time) * 1000)  # Convert to milliseconds
+    end_time = time.perf_counter()
+    running_time_ns = int((end_time - start_time) * 1000000)  # Convert to nanoseconds
     result = {
         "Solution 2 - Greedy choice ": "Largest density first (value/duration)",
         "Selected processes": selected_processes,
         "Total value": total_value,
         "Total duration": total_duration,
-        "Running time (ms)": running_time_ms
+        "Running time (ns)": running_time_ns
     }
 
     return result
 
 def modified_greedy_process_selection(processes, time_limit):
 
-    start_time = time.time()
+    start_time = time.perf_counter()
 
     # Sort processes based on modified value-to-time ratio (High Value with Lower Duration by giving more weight to the value.)  value/sqrt(duration)
     sorted_processes = sorted(processes, key=lambda x: x[2] / math.sqrt(x[1]), reverse=True)
@@ -96,17 +89,16 @@ def modified_greedy_process_selection(processes, time_limit):
             if total_duration == time_limit:
                 break
             # If the current process exceeds the time limit, skip it
-            continue
     
-    end_time = time.time()
-    running_time_ms = int((end_time - start_time) * 1000)  # Convert to milliseconds
+    end_time = time.perf_counter()
+    running_time_ns = int((end_time - start_time) * 1000000)  # Convert to nanoseconds
 
     result = {
         "Solution 3 - Greedy choice ": "Largest density first (value/sqrt(duration))",
         "Selected processes": selected_processes,
         "Total value": total_value,
         "Total duration": total_duration,
-        "Running time (ms)": running_time_ms
+        "Running time (ns)": running_time_ns
     }
 
     return result
@@ -133,7 +125,7 @@ def dynamic_process_selection(processes, time_limit):
         return v_table[i][t]
     
 
-    start_time = time.time()
+    start_time = time.perf_counter()
 
     n = len(processes)
     v_table = [[-1 for i in range(time_limit + 1)] for j in range(n + 1)]   # Initiate the memoization table
@@ -156,15 +148,15 @@ def dynamic_process_selection(processes, time_limit):
 
     selected_processes.reverse()
 
-    end_time = time.time()
-    running_time_ms = int((end_time - start_time) * 1000)  # Convert to milliseconds    
+    end_time = time.perf_counter()
+    running_time_ns = int((end_time - start_time) * 1000000)  # Convert to nanoseconds    
 
     result = {
         "Solution 4 - Dynamic Programming ": "",
         "Selected processes": selected_processes,
         "Total value": total_value,
         "Total duration": total_duration,
-        "Running time (ms)": running_time_ms
+        "Running time (ns)": running_time_ns
     }
 
     return result
